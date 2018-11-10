@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_10_204052) do
+ActiveRecord::Schema.define(version: 2018_11_10_210515) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "active_admin_comments", force: :cascade do |t|
@@ -35,10 +36,58 @@ ActiveRecord::Schema.define(version: 2018_11_10_204052) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet "current_sign_in_ip"
+    t.inet "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
+
+  create_table "machine_actions", force: :cascade do |t|
+    t.bigint "machine_id"
+    t.uuid "uuid"
+    t.string "status", default: "queued", null: false
+    t.string "action", null: false
+    t.datetime "scheduled_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["machine_id"], name: "index_machine_actions_on_machine_id"
+    t.index ["uuid"], name: "index_machine_actions_on_uuid"
+  end
+
+  create_table "machine_states", force: :cascade do |t|
+    t.bigint "machine_id"
+    t.string "brew_button"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["machine_id"], name: "index_machine_states_on_machine_id"
+  end
+
+  create_table "machine_users", force: :cascade do |t|
+    t.bigint "machine_id"
+    t.bigint "admin_user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_user_id"], name: "index_machine_users_on_admin_user_id"
+    t.index ["machine_id"], name: "index_machine_users_on_machine_id"
+  end
+
+  create_table "machines", force: :cascade do |t|
+    t.uuid "uuid"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "schedules", force: :cascade do |t|
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_schedules_on_user_id"
   end
 
 end
