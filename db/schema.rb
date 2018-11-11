@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(version: 2018_11_10_210515) do
   end
 
   create_table "machine_actions", force: :cascade do |t|
-    t.bigint "machine_id"
+    t.bigint "machine_id", null: false
     t.uuid "uuid"
     t.string "status", default: "queued", null: false
     t.string "action", null: false
@@ -60,7 +60,7 @@ ActiveRecord::Schema.define(version: 2018_11_10_210515) do
   end
 
   create_table "machine_states", force: :cascade do |t|
-    t.bigint "machine_id"
+    t.bigint "machine_id", null: false
     t.string "brew_button"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -68,8 +68,8 @@ ActiveRecord::Schema.define(version: 2018_11_10_210515) do
   end
 
   create_table "machine_users", force: :cascade do |t|
-    t.bigint "machine_id"
-    t.bigint "admin_user_id"
+    t.bigint "machine_id", null: false
+    t.bigint "admin_user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["admin_user_id"], name: "index_machine_users_on_admin_user_id"
@@ -84,7 +84,7 @@ ActiveRecord::Schema.define(version: 2018_11_10_210515) do
   end
 
   create_table "schedules", force: :cascade do |t|
-    t.bigint "user_id"
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_schedules_on_user_id"

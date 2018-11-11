@@ -5,6 +5,7 @@ ruby '2.4.3'
 
 # ActiveAdmin
 gem 'activeadmin'
+gem 'enumerize'
 gem 'devise'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

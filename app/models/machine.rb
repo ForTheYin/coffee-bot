@@ -13,4 +13,11 @@ class Machine < ApplicationRecord
   has_many :machine_users
   has_many :machine_actions
 
+  before_create :set_uuid
+
+  private
+
+  def set_uuid
+    self[:uuid] ||= SecureRandom.uuid
+  end
 end
