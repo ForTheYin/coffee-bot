@@ -59,7 +59,7 @@ class TransitionController < ApplicationController
   def play
     audio_device = AudioDevice.first
     PlayAlarmMusicJob.
-        set(wait_until: params[:scheduled_at]).
+        set(wait_until: params[:scheduled_at]&.to_datetime&.in_time_zone).
         perform_later(audio_device, params[:file_url])
 
     render status: :created, json: {}
@@ -72,7 +72,7 @@ class TransitionController < ApplicationController
         play_on_audio_device: params[:play_on_audio_device],
         play_on_phone: params[:play_on_phone],
         scheduled_at: params[:scheduled_at])
-    PerformScheduleJob.set(wait_until: params[:scheduled_at]).
+    PerformScheduleJob.set(wait_until: scheduling.scheduled_at).
         perform_later(scheduling)
 
     render status: :created, json: {}

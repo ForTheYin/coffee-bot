@@ -8,6 +8,7 @@ gem 'activeadmin'
 gem 'enumerize'
 gem 'faraday'
 gem 'devise'
+gem 'sidekiq', '< 6'
 gem 'twilio-ruby'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

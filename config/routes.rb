@@ -11,4 +11,8 @@ Rails.application.routes.draw do
   post '/perform/:uuid', to: 'transition#perform'
   post '/brew/:uuid', to: 'transition#brew'
   post '/switch_brew/:uuid', to: 'transition#switch_brew'
+
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
+
 end
