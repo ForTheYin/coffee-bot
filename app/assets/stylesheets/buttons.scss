@@ -1,0 +1,14 @@
+@import "mixins";
+@import "variables";
+
+.btn-group > button.btn,
+.btn-group > button:active {
+  background-image: none;
+  box-shadow: none;
+}
+
+.btn-group > button:hover {
+  background-image: none;
+  box-shadow: none;
+  border-color: transparent;
+}

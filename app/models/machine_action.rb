@@ -20,6 +20,7 @@ class MachineAction < ApplicationRecord
 
   enumerize :status, in: [:queued, :completed, :failed]
   scope :queued, ->{ where(status: :queued) }
+  scope :ordered, -> { order('scheduled_at ASC') }
 
   private
 

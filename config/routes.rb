@@ -4,5 +4,8 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   get '/queued/:uuid', to: 'transition#queued'
+  get '/temperatures/:uuid', to: 'transition#temperatures'
+
   post '/perform/:uuid', to: 'transition#perform'
+  post '/brew/:uuid', to: 'transition#brew'
 end
