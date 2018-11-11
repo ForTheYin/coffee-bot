@@ -95,4 +95,41 @@ class TransitionController < ApplicationController
     MachineAction.create!(machine: machine, action: 'switch_brew')
     render status: :created, json: {}
   end
+
+  # POST /sms_hook
+  def sms_hook
+    message = params[:Body]
+    matches = message.match(/(schedule|alarm).* ([0-9]?[0-9]:?[0-9]?[0-9]?) ?(am|pm).* (today|tonight|tomorrow)/i)
+
+    if matches.nil?
+      twiml = Twilio::TwiML::MessagingResponse.new do |r|
+        r.message(body: "Sorry, I don't understand you. Try saying something like: Schedule alarm for 6:20am tomorrow")
+      end
+      return render status: :ok, xml: twiml.to_xml
+    end
+
+    action, time, meridiem, date = matches.captures
+    schedule_datetime = "#{time}#{meridiem}".to_datetime.in_time_zone
+    print time
+    print date
+    if date == 'tommorow'
+      schedule_datetime = schedule_datetime.tomorrow
+    end
+
+    twiml = Twilio::TwiML::MessagingResponse.new do |r|
+      r.message(body: "Okay, I have scheduled your coffee to be ready at #{schedule_datetime}.")
+    end
+
+    scheduling = Schedule.create!(
+        admin_user: AdminUser.first,
+        play_on_audio_device: true,
+        play_on_phone: true,
+        scheduled_at: schedule_datetime)
+
+    BrewCoffeeJob.set(wait_until: schedule_datetime - 45.seconds).perform_later
+    PerformScheduleJob.set(wait_until: schedule_datetime).
+        perform_later(scheduling)
+
+    render status: :ok, xml: twiml.to_xml
+  end
 end
