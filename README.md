@@ -1,4 +1,5 @@
 # Coffee AI..?
+Check out our client library! https://github.com/ForTheYin/coffee-client
 ## Inspiration
 We're a group of engineers. We like coffee, that's practically a given. We also hate waking up. So, we decided to build something which would wake us up, make us coffee, and utilize some nifty technologies!
 
