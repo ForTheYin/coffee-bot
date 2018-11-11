@@ -19,6 +19,7 @@ class MachineAction < ApplicationRecord
   before_create :set_scheduled_at
 
   enumerize :status, in: [:queued, :completed, :failed]
+  scope :queued, ->{ where(status: :queued) }
 
   private
 

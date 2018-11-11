@@ -10,5 +10,7 @@
 #
 
 class MachineState < ApplicationRecord
-  enumerize :brew_button, in: [:powered_off, :brewing, :idle]
+  belongs_to :machine
+
+  enumerize :brew_button, in: [:powered_off, :brewing]
 end

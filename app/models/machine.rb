@@ -12,6 +12,7 @@
 class Machine < ApplicationRecord
   has_many :machine_users
   has_many :machine_actions
+  has_one :machine_state
 
   before_create :set_uuid
 
