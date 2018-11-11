@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get '/queued/:uuid', to: 'transition#queued'
   get '/temperatures/:uuid', to: 'transition#temperatures'
 
+  post '/play', to: 'transition#play'
   post '/perform/:uuid', to: 'transition#perform'
   post '/brew/:uuid', to: 'transition#brew'
 end

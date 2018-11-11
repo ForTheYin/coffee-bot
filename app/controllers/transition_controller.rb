@@ -24,7 +24,7 @@ class TransitionController < ApplicationController
   def queued
     machine = Machine.find_by!(uuid: params[:uuid])
     state = machine.machine_state
-    queued_actions = machine.machine_actions.queued
+    queued_actions = machine.machine_actions.queued || []
 
     render status: :ok, json: {
         current_state: {
@@ -51,6 +51,16 @@ class TransitionController < ApplicationController
             temperatures: state.machine_temperatures.ordered
         }
     }
+  end
+
+  # POST /play
+  def play
+    audio_device = AudioDevice.first
+    PlayAlarmMusicJob.
+        set(wait_until: params[:scheduled_at]).
+        perform_later(audio_device, params[:file_url])
+
+    render status: :created, json: {}
   end
 
   # POST /brew/:uuid
