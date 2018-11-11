@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_11_054309) do
+ActiveRecord::Schema.define(version: 2018_11_11_072401) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -76,6 +76,14 @@ ActiveRecord::Schema.define(version: 2018_11_11_054309) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["machine_id"], name: "index_machine_states_on_machine_id"
+  end
+
+  create_table "machine_temperatures", force: :cascade do |t|
+    t.bigint "machine_state_id", null: false
+    t.decimal "degree", precision: 8, scale: 5, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["machine_state_id"], name: "index_machine_temperatures_on_machine_state_id"
   end
 
   create_table "machine_users", force: :cascade do |t|

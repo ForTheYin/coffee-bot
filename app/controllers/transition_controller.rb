@@ -5,6 +5,7 @@ class TransitionController < ApplicationController
   def perform
     state = Machine.find_by!(uuid: params[:uuid]).machine_state
     state.brew_button = params.dig(:current_state, :brew_button)
+    state.add_temperature!(params.dig(:current_state, :temperature))
     state.save!
 
     print params[:actions_performed]

@@ -30,7 +30,11 @@ end
 
 def create_machines
   machine = Machine.create!(name: 'The Covfefe Maker', uuid: '123e4567-e89b-12d3-a456-426655440000')
-  MachineState.create!(machine: machine)
+  machine_state = MachineState.create!(machine: machine)
+
+  (1..15).each do |index|
+    MachineTemperature.create!(machine_state: machine_state, degree: index * 6 + rand(0..5))
+  end
 end
 
 create_admin_user
