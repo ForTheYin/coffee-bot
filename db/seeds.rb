@@ -18,6 +18,11 @@ def create_admin_user
         port: '8090',
         app_key: 'sample')
 
+    PhoneDevice.create!(
+        account_sid: 'sample',
+        auth_token: 'sample',
+        from_number: '+6175555555'
+    )
     Phone.create!(
         admin_user: admin_user,
         number: '+6175555555'

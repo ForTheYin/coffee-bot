@@ -24,4 +24,5 @@ class AdminUser < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_one :phone
+  has_one :user_preference
 end

@@ -63,6 +63,19 @@ class TransitionController < ApplicationController
     render status: :created, json: {}
   end
 
+  # POST /schedule
+  def schedule
+    scheduling = Schedule.create!(
+        admin_user: AdminUser.first,
+        play_on_audio_device: params[:play_on_audio_device],
+        play_on_phone: params[:play_on_phone],
+        scheduled_at: params[:scheduled_at])
+    PerformScheduleJob.set(wait_until: params[:scheduled_at]).
+        perform_later(scheduling)
+
+    render status: :created, json: {}
+  end
+
   # POST /brew/:uuid
   def brew
     machine = Machine.find_by!(uuid: params[:uuid])

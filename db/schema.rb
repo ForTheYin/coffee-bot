@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_11_072401) do
+ActiveRecord::Schema.define(version: 2018_11_11_124804) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -102,6 +102,15 @@ ActiveRecord::Schema.define(version: 2018_11_11_072401) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "phone_devices", force: :cascade do |t|
+    t.string "status", default: "inactive", null: false
+    t.string "account_sid", null: false
+    t.string "auth_token", null: false
+    t.string "from_number", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "phones", force: :cascade do |t|
     t.bigint "admin_user_id", null: false
     t.string "status", default: "inactive", null: false
@@ -112,10 +121,13 @@ ActiveRecord::Schema.define(version: 2018_11_11_072401) do
   end
 
   create_table "schedules", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.bigint "admin_user_id", null: false
+    t.datetime "scheduled_at", null: false
+    t.boolean "play_on_audio_device", default: false
+    t.boolean "play_on_phone", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_schedules_on_user_id"
+    t.index ["admin_user_id"], name: "index_schedules_on_admin_user_id"
   end
 
   create_table "user_preferences", force: :cascade do |t|
