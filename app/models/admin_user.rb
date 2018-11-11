@@ -22,4 +22,6 @@ class AdminUser < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, 
          :recoverable, :rememberable, :validatable
+
+  has_one :phone
 end

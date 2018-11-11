@@ -7,9 +7,26 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 def create_admin_user
-  AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
-end
+  if Rails.env.development?
+    admin_user = AdminUser.create!(
+        email: 'admin@example.com',
+        password: 'password',
+        password_confirmation: 'password')
+    audio_device = AudioDevice.create!(
+        name: 'Remote Speaker',
+        ip: '127.0.0.1',
+        port: '8090',
+        app_key: 'sample')
 
+    Phone.create!(
+        admin_user: admin_user,
+        number: '+6175555555'
+    )
+    UserPreference.create!(
+        admin_user: admin_user,
+        audio_device: audio_device)
+  end
+end
 
 def create_machines
   machine = Machine.create!(name: 'The Covfefe Maker', uuid: '123e4567-e89b-12d3-a456-426655440000')

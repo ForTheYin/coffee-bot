@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_10_210515) do
+ActiveRecord::Schema.define(version: 2018_11_11_054309) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -45,6 +45,17 @@ ActiveRecord::Schema.define(version: 2018_11_10_210515) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
+
+  create_table "audio_devices", force: :cascade do |t|
+    t.string "status", default: "inactive", null: false
+    t.string "name"
+    t.string "ip", null: false
+    t.integer "port", null: false
+    t.string "app_key", null: false
+    t.integer "volume", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "machine_actions", force: :cascade do |t|
@@ -83,11 +94,29 @@ ActiveRecord::Schema.define(version: 2018_11_10_210515) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "phones", force: :cascade do |t|
+    t.bigint "admin_user_id", null: false
+    t.string "status", default: "inactive", null: false
+    t.string "number", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_user_id"], name: "index_phones_on_admin_user_id"
+  end
+
   create_table "schedules", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_schedules_on_user_id"
+  end
+
+  create_table "user_preferences", force: :cascade do |t|
+    t.bigint "admin_user_id", null: false
+    t.bigint "audio_device_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_user_id"], name: "index_user_preferences_on_admin_user_id"
+    t.index ["audio_device_id"], name: "index_user_preferences_on_audio_device_id"
   end
 
 end
