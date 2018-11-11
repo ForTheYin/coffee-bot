@@ -14,6 +14,7 @@ class MachineState < ApplicationRecord
   has_many :machine_temperatures
 
   enumerize :brew_button, in: [:powered_off, :brewing]
+  enumerize :strength_button, in: [:regular, :strong]
 
   def add_temperature!(degree)
     MachineTemperature.create!(machine_state: self, degree: degree)

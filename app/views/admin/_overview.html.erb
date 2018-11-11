@@ -48,10 +48,10 @@
               <div class="mr-5"> What kind of brew do you wanna make?</div>
             </div>
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              <label class="btn btn-secondary active">
+              <label class="btn btn-secondary btn-regular-brew <%= @machine_state.strength_button == 'regular' ? 'active' : '' %>">
                 <input type="radio" name="options" id="option1" autocomplete="off" checked> Regular
               </label>
-              <label class="btn btn-secondary">
+              <label class="btn btn-secondary btn-strong-brew <%= @machine_state.strength_button == 'regular' ? '' : 'active' %>">
                 <input type="radio" name="options" id="option2" autocomplete="off"> Strong
               </label>
             </div>
@@ -66,7 +66,7 @@
               <div class="mr-5"> Actions</div>
             </div>
             <div class="btn-group">
-              <button type="button" class="btn btn-success brew-coffee-btn">Brew</button>
+              <button type="button" class="btn btn-success btn-brew-coffee">Brew</button>
             </div>
           </div>
         </div>
@@ -284,9 +284,37 @@
             })
         }
 
+        function switchBrewRegular() {
+            $('.btn-regular-brew').addClass('active');
+            $('.btn-strong-brew').removeClass('active');
+
+            return fetch('/switch_brew/<%= @machine.uuid %>', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({set_strength: 'regular'})
+            })
+        }
+
+        function switchBrewStrong() {
+            $('.btn-regular-brew').removeClass('active');
+            $('.btn-strong-brew').addClass('active');
+
+            return fetch('/switch_brew/<%= @machine.uuid %>', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({set_strength: 'strong'})
+            })
+        }
+
         loopTemperature();
 
-        $('.brew-coffee-btn').click(brew);
+        $('.btn-brew-coffee').click(brew);
+        $('.btn-regular-brew').click(switchBrewRegular);
+        $('.btn-strong-brew').click(switchBrewStrong);
     })();
 
 </script>

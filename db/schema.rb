@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 2018_11_11_124804) do
   create_table "machine_states", force: :cascade do |t|
     t.bigint "machine_id", null: false
     t.string "brew_button"
+    t.string "strength_button"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["machine_id"], name: "index_machine_states_on_machine_id"

@@ -10,4 +10,5 @@ Rails.application.routes.draw do
   post '/schedule', to: 'transition#schedule'
   post '/perform/:uuid', to: 'transition#perform'
   post '/brew/:uuid', to: 'transition#brew'
+  post '/switch_brew/:uuid', to: 'transition#switch_brew'
 end

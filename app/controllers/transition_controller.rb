@@ -5,6 +5,7 @@ class TransitionController < ApplicationController
   def perform
     state = Machine.find_by!(uuid: params[:uuid]).machine_state
     state.brew_button = params.dig(:current_state, :brew_button)
+    state.strength_button = params.dig(:current_state, :strength_button)
     state.save!
 
     temperature_update = params.dig(:current_state, :temperature)
@@ -29,6 +30,7 @@ class TransitionController < ApplicationController
     render status: :ok, json: {
         current_state: {
             brew_button: state.brew_button,
+            strength_button: state.strength_button,
             temperature: state.machine_temperatures.last.degree
         },
         queued_actions: queued_actions.map do |queued_action|
@@ -81,6 +83,16 @@ class TransitionController < ApplicationController
     machine = Machine.find_by!(uuid: params[:uuid])
     MachineAction.create!(machine: machine, action: 'brew')
 
+    render status: :created, json: {}
+  end
+
+  # POST /switch_brew/:uuid
+  def switch_brew
+    machine = Machine.find_by!(uuid: params[:uuid])
+    state = machine.machine_state
+    render status: :not_modified, json: {} if params[:set_strength] == state.brew_button
+
+    MachineAction.create!(machine: machine, action: 'switch_brew')
     render status: :created, json: {}
   end
 end
